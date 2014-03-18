@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=@APPNAME@
+GenericName=Lampp GUI
+Comment=@DESCRIPTION@
+Exec=@PACKAGE@
+StartupNotify=true
+Terminal=false
+Type=Application
+Icon=@PACKAGE@
+Categories=Gtk;Network;Utility;

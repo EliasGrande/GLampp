@@ -17,15 +17,15 @@ DATE := $(shell date -ud @`find "$(srcdir)/" | grep -ve '~$$' \
 def_lamppdir = /opt/lampp
 
 # relative paths
-rel_bin = glampp
+rel_bin = glampp.sh
 rel_gui = gui/glampp.py
 rel_config = config.ini
 rel_scriptsdir = scripts
 rel_sharedir = share
 rel_iconsdir = $(rel_sharedir)/icons
 rel_desktop = $(rel_sharedir)/desktop/desktop
-rel_install = install
-rel_uninstall = uninstall
+rel_install = install.sh
+rel_uninstall = uninstall.sh
 
 # install paths
 ins_bin = /usr/local/bin/$(PACKAGE)
@@ -36,11 +36,13 @@ ins_desktop = /usr/share/applications/$(PACKAGE).desktop
 # dist
 distrun = $(distdir)/$(PACKAGE)-$(VERSION)-$(DATE).run
 
-# substitutions for *.in files
-do_sub = sed -e 's,[@]PACKAGE[@],$(PACKAGE),g' \
+# substitutions for in.* files
+do_sub = sed \
+	-e 's,[@]PACKAGE[@],$(PACKAGE),g' \
 	-e 's,[@]VERSION[@],$(VERSION),g' \
 	-e 's,[@]APPNAME[@],$(APPNAME),g' \
 	-e 's,[@]WEBSITE[@],$(WEBSITE),g' \
+	-e 's,[@]DESCRIPTION[@],$(DESCRIPTION),g' \
 	-e 's,[@]DATE[@],$(DATE),g' \
 	-e 's,[@]rel_bin[@],$(rel_bin),g' \
 	-e 's,[@]rel_gui[@],$(rel_gui),g' \
@@ -66,9 +68,9 @@ clean:
 build: clean
 	cp -R "$(srcdir)" "$(builddir)"
 	cp "$(license)" "$(builddir)"
-	find "$(builddir)/" | grep -e '\.in$$' \
+	find "$(builddir)/" | grep -e '/in\.[^/]*$$' \
 	| while read file_in; do \
-		file_out=`echo "$$file_in" | sed -e 's,\.in$$,,'`; \
+		file_out=`echo "$$file_in" | sed -e 's,in\.\([^/]*\)$$,\1,'`; \
 		$(do_sub) < "$$file_in" > "$$file_out"; \
 		rm "$$file_in"; \
 	done
